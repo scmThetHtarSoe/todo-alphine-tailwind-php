@@ -8,7 +8,6 @@ $(document).ready(function () {
     } else {
       $("#submit").attr("disabled", "disabled");
       $.ajax({
-        // url: "<?php echo "http://" . $url . "/create.php" ?>",
         url: "http://" + getUrl + "/create.php",
         method: "POST",
         data: $(this).serialize(),
@@ -41,7 +40,6 @@ $(document).ready(function () {
     var tasklistId = $(this).siblings(".cross").data("id");
     var getSpan = $(this).siblings(".for-span");
     $.ajax({
-      // url: "<?php echo "http://" . $url . "/updateStatus.php" ?>",
       url: "http://" + getUrl + "/updateStatus.php",
       method: "POST",
       data: {
@@ -66,7 +64,6 @@ $(document).ready(function () {
     var tasklistId = $(this).data("id");
     var getli = $(this).parent(".list-group-item");
     $.ajax({
-      // url: "<?php echo "http://" . $url . "/delete.php" ?>",
       url: "http://" + getUrl + "/delete.php",
       method: "POST",
       data: {
@@ -81,7 +78,6 @@ $(document).ready(function () {
   //--------------------cross--------------
 
   $.ajax({
-    // url: "<?php echo "http://" . $url . "/allLists.php" ?>",
     url: "http://" + getUrl + "/allLists.php",
     type: "GET",
     success: function (response) {
@@ -123,7 +119,6 @@ $(document).ready(function () {
   //----------all btn --------------
   $(document).on("click", "#all", function () {
     $.ajax({
-      // url: "<?php echo "http://" . $url . "/allLists.php" ?>",
       url: "http://" + getUrl + "/allLists.php",
       type: "GET",
       success: function (response) {
@@ -168,7 +163,6 @@ $(document).ready(function () {
   //--------all not done btn --------------
   $(document).on("click", "#notdone", function () {
     $.ajax({
-      // url: "<?php echo "http://" . $url . "/active.php" ?>",
       url: "http://" + getUrl + "/active.php",
       method: "GET",
       success: function (response) {
@@ -197,7 +191,6 @@ $(document).ready(function () {
   //--------all done btn --------------
   $(document).on("click", "#done", function () {
     $.ajax({
-      // url: "<?php echo "http://" . $url . "/completed.php" ?>",
       url: "http://" + getUrl + "/completed.php",
       method: "GET",
       success: function (response) {
@@ -226,7 +219,6 @@ $(document).ready(function () {
   //--------check all btn --------------
   $(document).on("click", "#checkAll", function () {
     $.ajax({
-      // url: "<?php echo "http://" . $url . "/checkAll.php" ?>",
       url: "http://" + getUrl + "/checkAll.php",
       method: "POST",
       data: $(this).serialize(),
@@ -247,7 +239,6 @@ $(document).ready(function () {
   //--------uncheck all btn --------------
   $(document).on("click", "#uncheckAll", function () {
     $.ajax({
-      // url: "<?php echo "http://" . $url . "/uncheckAll.php" ?>",
       url: "http://" + getUrl + "/uncheckAll.php",
       method: "POST",
       data: $(this).serialize(),
@@ -268,7 +259,6 @@ $(document).ready(function () {
   //-----------clear all done btn -----------
   $(document).on("click", "#cleardone", function () {
     $.ajax({
-      // url: "<?php echo "http://" . $url . "/clearCompleted.php" ?>",
       url: "http://" + getUrl + "/clearCompleted.php",
       type: "POST",
       data: $(this).serialize(),
@@ -291,8 +281,6 @@ $(document).ready(function () {
     $(this).text("");
     $(this).append(input);
     $(".form-control-edit").focus();
-
-    // $(this).children(".editForm").submit(function(event) {
     $(this)
       .children(".editForm")
       .children(".form-control-edit")
@@ -300,7 +288,6 @@ $(document).ready(function () {
         event.preventDefault();
         var val = $(".form-control-edit").val();
         $.ajax({
-          // url: "<?php echo "http://" . $url . "/update.php" ?>",
           url: "http://" + getUrl + "/update.php",
           type: "POST",
           data: {
@@ -320,7 +307,6 @@ $(document).ready(function () {
 
   function getText() {
     $.ajax({
-      // url: "<?php echo "http://" . $url . "/active.php" ?>",
       url: "http://" + getUrl + "/active.php",
       type: "GET",
       success: function (response) {

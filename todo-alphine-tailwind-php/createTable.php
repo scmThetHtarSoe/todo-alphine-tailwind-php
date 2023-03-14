@@ -2,7 +2,7 @@
 $serverName = "localhost";
 $userName = "root";
 $password = "000000";
-$dbName = "todolistsphp";
+$dbName = "todo_list_php";
 $connection = new PDO("mysql:host=$serverName;dbname=$dbName",$userName,$password);
 if($connection) {
     $sql = "CREATE TABLE lists(
@@ -13,7 +13,7 @@ if($connection) {
     if($sql) {
         $res = $connection->prepare($sql);
         $res->execute([]);
-        echo "lists table created successfully";
+        // echo "lists table created successfully";
     } else {
         echo "SQL error";
     }

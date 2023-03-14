@@ -6,11 +6,11 @@ $password = "000000";
 try {
     $connection = new PDO("mysql:host=$serverName",$userName,$password);
     $connection->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-    echo "Successfully Connected";
+    // echo "Successfully Connected";
         if($connection) {
-        $sql = "CREATE DATABASE todolistsPHP";
+        $sql = "CREATE DATABASE todo_list_php";
         $connection->exec($sql);
-        echo "Database Created Successfully";
+        // echo "Database Created Successfully";
     } else {
         echo "Connection Problem";
     }
