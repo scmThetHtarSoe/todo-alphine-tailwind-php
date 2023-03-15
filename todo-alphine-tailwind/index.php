@@ -1,5 +1,4 @@
 <?php
-// include_once('./../api/connect_db.php');
 
 include_once("api/createDB.php");
 include_once("api/createTable.php");
@@ -19,12 +18,12 @@ include_once("api/createTable.php");
 
 <body>
     <div class="flex justify-center items-center h-screen">
-        <div class="container shadow w-[800px] h-auto p-8" x-data="todoApp()">
+        <div class="container shadow w-[500px] h-auto p-8" x-data="todoApp()">
             <h2 class="title text-3xl">Todo</h2>
             <div id="form" class="flex mt-4 w-full">
                 <form method="POST" id="todoForm" class="w-full">
                     <input type="text" name="texts" id="list-text" class="border border-gray-300 w-10/12 p-2 focus:outline-blue-500" placeholder="Add New..." x-model="message" @keyup.enter="addTodo" />
-                    <button @click="addTodo" type="submit" name="submit" id="submit" class="bg-blue-400 px-2 pt-1 pb-2 text-xl text-white ml-4 items-center leading-normal">
+                    <button @click="addTodo" type="submit" name="submit" id="submit" class="bg-blue-400 px-4 pt-1 pb-2 text-xl text-white ml-4 items-center leading-normal">
                         +
                     </button>
                 </form>
