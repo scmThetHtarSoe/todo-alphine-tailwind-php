@@ -8,7 +8,7 @@ class Database{
 
     public function connect() {
         $this->hostName = "localhost";
-        $this->dbName = "todolistsphp";
+        $this->dbName = "todo_list_php";
         $this->userName = "root";
         $this->password = "000000";
         $this->connection = new PDO("mysql:host=$this->hostName;dbname=$this->dbName",$this->userName,$this->password);
@@ -16,7 +16,7 @@ class Database{
                 //  echo "Connected Successfully";
                     return $this->connection;  
         } else {
-                       print_r($this->connection);
+                    print_r($this->connection);
             exit;
         }
     }
@@ -24,4 +24,3 @@ class Database{
 
 $db =  new Database();
 $db->connect();
-?>

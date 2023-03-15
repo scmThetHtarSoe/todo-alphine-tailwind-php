@@ -7,6 +7,12 @@ include_once("./config/database.php");
 include_once("./classes/lists.php");
 $db = new Database();
 $connection = $db->connect();
+
+// $serverName = "localhost";
+// $userName = "root";
+// $password = "000000";
+// $dbName = "todo_list_php";
+// $connection = new PDO("mysql:host=$serverName;dbname=$dbName",$userName,$password);
 $lists = new Lists($connection);
 if($_SERVER['REQUEST_METHOD'] === 'GET') {
 $getAllLists = $lists->get_all_lists();
