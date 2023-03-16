@@ -1,10 +1,6 @@
 <?php
-// include_once('./connect_db.php');
-$serverName = "localhost";
-$userName = "root";
-$password = "000000";
-$dbName = "todo_list_php";
-$connection = new PDO("mysql:host=$serverName;dbname=$dbName", $userName, $password);
+include_once('connect_db.php');
+$connection = new PDO("mysql:host=$db->serverName;dbname=$db->dbName", $db->userName, $db->password);
 if ($connection) {
     $sql = "CREATE TABLE IF NOT EXISTS lists(
         id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,

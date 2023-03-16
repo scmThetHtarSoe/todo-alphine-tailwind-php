@@ -12,7 +12,6 @@ const todoApp = () => ({
       url: "/api/allLists.php",
       type: "GET",
       success: function (response) {
-        // console.log(response.data);
         $allLists = response.data;
         $allLists.forEach(function (val) {
           this.$s.push({
@@ -23,7 +22,6 @@ const todoApp = () => ({
         });
       },
     });
-    console.log(this.message);
 
     gettext();
 
@@ -51,41 +49,23 @@ const todoApp = () => ({
       $("#errMsg").text("Plese Enter List!");
       return false;
     } else {
-      // $("#submit").attr("disabled", "disabled");
       $.ajax({
         url: "/api/create.php",
         type: "POST",
-        // data: $(this).serialize(),
         data: { texts: texts },
         success: function (data) {
+          console.log(data.texts);
           $("#todoForm")[0].reset();
+          var idx = $(".list-group-item:last").index();
           $(".list-group").append(
-            '<li class="list-group-item">' +
-              '<input type="checkbox" id="getCheckbox" @click="check(event.target,' +
-              data.id +
-              ')"  class="getCheckbox"/>' +
-              '<span id="for-span-' +
-              data.id +
-              '" class="ml-4 for-span text"  @dblclick="editfun(event.target,' +
-              data.id +
-              ')">' +
-              data.texts +
-              "</span>" +
-              '<div class="editinputs getallinputs">' +
-              '<input type="text" :id="`task_edit-${' +
-              data.id +
-              '}`" class="form-control-edit" x-model="' +
-              data.texts +
-              '" @keyup.enter="updatefun(event.target,' +
-              data.id +
-              ')" />' +
-              "</div>" +
-              '<button @click="del(event.target,' +
-              data.id +
-              ')" id="remove" class="cross" data-id=' +
-              data.id +
-              ">&times;</button>" +
-              "</li>"
+            `<li class="list-group-item">
+            <input type="checkbox" id="getCheckbox" class="getCheckbox" @click="check(event.target,${data.id})">
+            <span :class="${data.done} ? 'completed text for-span ml-4' : 'text for-span ml-4'"  @dblclick="editfun(event.target,${data.id})">${data.texts}</span>
+            <div @click.outside="removeInput(${idx},${data.id})" class="editinputs getallinputs">
+                <input type="text"  class="form-control-edit" @click="updatefun(event.target,${data.id})"/>
+            </div>
+            <span @click="del(event.target,${data.id})" id="remove" class="cross" data-id="${data.id}">&times;</span>
+            </li>`
           );
 
           $.ajax({
@@ -93,7 +73,6 @@ const todoApp = () => ({
             type: "GET",
             success: function (response) {
               $("#zero").html(response.data.length);
-              this.$l = response.data.length;
             },
           });
         },
@@ -113,65 +92,17 @@ const todoApp = () => ({
         $allLists = response.data;
         $(".list-group").html("");
         $allLists.forEach(function (val) {
-          if (val.status == 0) {
-            $(".list-group").append(
-              '<li class="list-group-item">' +
-                '<input type="checkbox" id="getCheckbox" @click="check(event.target,' +
-                val.id +
-                ')"  class="getCheckbox"/>' +
-                '<span id="for-span-' +
-                val.id +
-                '" class="ml-4 for-span text" @dblclick="editfun(event.target,' +
-                val.id +
-                ')">' +
-                val.texts +
-                "</span>" +
-                '<div class="editinputs getallinputs">' +
-                '<input type="text" :id="`task_edit-${' +
-                val.id +
-                '}`" class="form-control-edit" x-model="' +
-                val.texts +
-                '" @keyup.enter="updatefun(event.target,' +
-                val.id +
-                ')" />' +
-                "</div>" +
-                '<button @click="del(event.target,' +
-                val.id +
-                ')" id="remove" class="cross" data-id=' +
-                val.id +
-                ">&times;</button>" +
-                "</li>"
-            );
-          } else {
-            $(".list-group").append(
-              '<li class="list-group-item">' +
-                '<input type="checkbox" id="getCheckbox" @click="check(event.target,' +
-                val.id +
-                ')"  class="getCheckbox" checked/>' +
-                '<span id="for-span-' +
-                val.id +
-                '" class="ml-4 for-span text completed" @dblclick="editfun(event.target,' +
-                val.id +
-                ')">' +
-                val.texts +
-                "</span>" +
-                '<div class="editinputs getallinputs">' +
-                '<input type="text" :id="`task_edit-${' +
-                val.id +
-                '}`" class="form-control-edit" x-model="' +
-                val.texts +
-                '" @keyup.enter="updatefun(event.target,' +
-                val.id +
-                ')" />' +
-                "</div>" +
-                '<button @click="del(event.target,' +
-                val.id +
-                ')" id="remove" class="cross" data-id=' +
-                val.id +
-                ">&times;</button>" +
-                "</li>"
-            );
-          }
+          var getChecked = val.status ? "checked" : "";
+          $(".list-group").append(
+            `<li class="list-group-item">
+            <input type="checkbox" id="getCheckbox" class="getCheckbox" @click="check(event.target,${val.id})" ${getChecked}>
+            <span :class="${val.status} ? 'completed text for-span ml-4' : 'text for-span ml-4'"  @dblclick="editfun(event.target,${val.id})">${val.texts}</span>
+            <div class="editinputs getallinputs">
+                <input type="text"  class="form-control-edit" @click="updatefun(event.target,${val.id})"/>
+            </div>
+            <span @click="del(event.target,${val.id})" id="remove" class="cross" data-id="${val.id}">&times;</span>
+            </li>`
+          );
         });
 
         $.ajax({
@@ -179,7 +110,6 @@ const todoApp = () => ({
           type: "GET",
           success: function (response) {
             $("#zero").html(response.data.length);
-            this.$l = response.data.length;
           },
         });
       },
@@ -194,21 +124,14 @@ const todoApp = () => ({
         $(".list-group").html("");
         $allLists.forEach(function (val) {
           $(".list-group").append(
-            '<li class="list-group-item">' +
-              '<input type="checkbox" id="getCheckbox" @click="check(event.target,' +
-              val.id +
-              ')"  class="getCheckbox"/>' +
-              '<span id="for-span-' +
-              val.id +
-              '" class="ml-4 for-span">' +
-              val.texts +
-              "</span>" +
-              '<button @click="del(event.target,' +
-              val.id +
-              ')" id="remove" class="cross" data-id=' +
-              val.id +
-              ">&times;</button>" +
-              "</li>"
+            `<li class="list-group-item">
+            <input type="checkbox" id="getCheckbox" class="getCheckbox" @click="check(event.target,${val.id})">
+            <span :class="${val.status} ? 'completed text for-span ml-4' : 'text for-span ml-4'"  @dblclick="editfun(event.target,${val.id})">${val.texts}</span>
+            <div class="editinputs getallinputs">
+                <input type="text"  class="form-control-edit" @click="updatefun(event.target,${val.id})"/>
+            </div>
+            <span @click="del(event.target,${val.id})" id="remove" class="cross" data-id="${val.id}">&times;</span>
+            </li>`
           );
         });
       },
@@ -224,21 +147,14 @@ const todoApp = () => ({
         $(".list-group").html("");
         $allLists.forEach(function (val) {
           $(".list-group").append(
-            '<li class="list-group-item">' +
-              '<input type="checkbox" id="getCheckbox" @click="check(event.target,' +
-              val.id +
-              ')"  class="getCheckbox" checked/>' +
-              '<span id="for-span-' +
-              val.id +
-              '" class="ml-4 for-span line-through">' +
-              val.texts +
-              "</span>" +
-              '<button @click="del(event.target,' +
-              val.id +
-              ')" id="remove" class="cross" data-id=' +
-              val.id +
-              ">&times;</button>" +
-              "</li>"
+            `<li class="list-group-item">
+            <input type="checkbox" id="getCheckbox" class="getCheckbox" @click="check(event.target,${val.id})" checked>
+            <span :class="${val.status} ? 'completed text for-span ml-4' : 'text for-span ml-4'"  @dblclick="editfun(event.target,${val.id})">${val.texts}</span>
+            <div class="editinputs getallinputs">
+                <input type="text"  class="form-control-edit" @click="updatefun(event.target,${val.id})"/>
+            </div>
+            <span @click="del(event.target,${val.id})" id="remove" class="cross" data-id="${val.id}">&times;</span>
+            </li>`
           );
         });
       },
@@ -347,7 +263,6 @@ const todoApp = () => ({
   },
   check(el, idx) {
     var tasklistId = idx;
-    var getSpan = $(el).siblings(".text");
     $.ajax({
       url: "/api/updateStatus.php",
       method: "POST",
@@ -377,43 +292,45 @@ const todoApp = () => ({
     });
   },
 
+  oldValues: [],
+
   editfun(el, idx) {
     el.classList.add("editinputs");
     el.nextElementSibling.classList.remove("editinputs");
-    $s = this.getLists;
-
-    var oldVal = $s.filter(function (data) {
-      return data.id == idx;
-    });
-    var getVal = oldVal[0].text.trim();
+    var getVal = el.textContent;
+    $(".form-control-edit").focus();
     this.oldText = getVal;
+  },
+
+  removeInput(index, idx) {
+    var getEditInput = document.querySelectorAll(".form-control-edit");
+    this.updatefun(getEditInput[index], idx);
   },
 
   updatefun(el, idx) {
     el.parentNode.previousElementSibling.classList.remove("editinputs");
     el.parentNode.classList.add("editinputs");
     var oldVal = this.oldText;
-    console.log(oldVal);
     var tasklistId = idx;
 
     el.addEventListener("blur", function (event) {
       event.preventDefault();
-      var val = $(el).val().trim();
-      $.ajax({
-        url: "/api/update.php",
-        type: "POST",
-        data: {
-          tasklistId: tasklistId,
-          gettexts: val,
-        },
-        success: function (response) {
-          if (val.trim() != "") {
+      var val = $(el).val();
+      if (val.trim() != "") {
+        $.ajax({
+          url: "/api/update.php",
+          type: "POST",
+          data: {
+            tasklistId: tasklistId,
+            gettexts: val,
+          },
+          success: function (response) {
             el.parentNode.previousElementSibling.innerText = val;
-          } else {
-            el.parentNode.previousElementSibling.innerText = oldVal;
-          }
-        },
-      });
+          },
+        });
+      } else {
+        el.parentNode.previousElementSibling.innerText = oldVal;
+      }
     });
   },
 });

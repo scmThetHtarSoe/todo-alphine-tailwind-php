@@ -15,10 +15,11 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         if ($lists->create_list()) {
             http_response_code(200); //200 OK
             echo json_encode([
-                "status" => 1,
+                "status" => 0,
                 "message" => "List Created",
                 "texts" => $lists->texts,
                 "id" => $connection->lastInsertId(),
+                "done" => 0
             ]);
             // echo "List Created";
         } else {

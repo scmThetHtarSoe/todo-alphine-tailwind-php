@@ -1,8 +1,10 @@
-<?php 
-$serverName = "localhost";
-$userName = "root";
-$password = "000000";
+<?php
+class DB
+{
+    public $serverName = "localhost";
+    public $userName = "root";
+    public $password = "000000";
+    public $dbName = "todo_list_php";
+}
 
-$connection = new PDO("mysql:host=$serverName",$userName,$password);
-$connection->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-?>
+$db = new DB();

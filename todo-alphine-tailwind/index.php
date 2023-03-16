@@ -1,5 +1,4 @@
 <?php
-
 include_once("api/createDB.php");
 include_once("api/createTable.php");
 ?>
@@ -40,14 +39,13 @@ include_once("api/createTable.php");
                     Completed
                 </button>
             </div>
-            <!-- <ul class="getallLists"></ul> -->
             <ul class="list-group mt-4">
-                <template x-for="data in getLists" class="template-append">
+                <template x-for="(data,idx) in getLists" class="template-append">
                     <li class="list-group-item">
                         <input type="checkbox" class="getCheckbox" x-model="data.status" @click="check(event.target,data.id)" :checked="data.status ? true : false " />
                         <span :class="data.status ? 'completed text ml-4' : 'text ml-4' " x-text="data.text" @dblclick="editfun(event.target,data.id)"></span>
-                        <div class="editinputs getallinputs">
-                            <input type="text" :id="`task_edit-${data.id}`" class="form-control-edit" x-model="data.text" @keyup.enter="updatefun(event.target,data.id)" />
+                        <div @click.outside="removeInput(idx,data.id)" class="editinputs getallinputs">
+                            <input type="text" :id="`task_edit-${data.id}`" class="form-control-edit" x-model="data.text" @click="updatefun(event.target,data.id)" />
                         </div>
                         <span @click="del(event.target,data.id)" id="remove">&times;</span>
                     </li>
@@ -69,7 +67,7 @@ include_once("api/createTable.php");
 
     <!-- <script src="./script.js"></script> -->
     <script defer src="https://unpkg.com/alpinejs@3.4.2/dist/cdn.min.js"></script>
-    <script src="view/script.js"></script>
+    <script src="./view/script.js"></script>
 </body>
 
 </html>
