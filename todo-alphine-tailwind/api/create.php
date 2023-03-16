@@ -21,14 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                 "id" => $connection->lastInsertId(),
                 "done" => 0
             ]);
-            // echo "List Created";
         } else {
             http_response_code(500); //500 Internal Server Error
             echo json_encode([
                 "status" => 0,
                 "message" => "Failed"
             ]);
-            // echo "Failed";
         }
     } else {
         http_response_code(404); //503 services unavailable
@@ -37,13 +35,10 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             "message" => "Lists needed"
         ]);
     }
-    // print_r($data);die;
-
 } else {
     http_response_code(503); //503 services unavailable
     echo json_encode([
         "status" => 0,
         "message" => "Access Denied"
     ]);
-    // echo "Access Denied";
 }

@@ -13,28 +13,28 @@ $connection = $db->connect();
 $lists = new Lists($connection);
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
-  $data = json_decode(file_get_contents("php://input")); //post man mhr body nae param pay poh
-  if (!empty($data->id)) {
-    $lists->id = $data->id;
-    $singleList = $lists->get_single_list();
-    if (!empty($singleList)) {
-      http_response_code(200);
-      echo json_encode([
-        "status" => 1,
-        "message" => $singleList
-      ]);
-    } else {
-      http_response_code(404);
-      echo json_encode([
-        "status" => 0,
-        "message" => "List not found"
-      ]);
+    $data = json_decode(file_get_contents("php://input")); //post man mhr body nae param pay poh
+    if (!empty($data->id)) {
+        $lists->id = $data->id;
+        $singleList = $lists->get_single_list();
+        if (!empty($singleList)) {
+            http_response_code(200);
+            echo json_encode([
+                "status" => 1,
+                "message" => $singleList
+            ]);
+        } else {
+            http_response_code(404);
+            echo json_encode([
+                "status" => 0,
+                "message" => "List not found"
+            ]);
+        }
     }
-  }
 } else {
-  http_response_code(503);
-  echo json_encode([
-    "status" => '0',
-    'message' => 'Access Denied'
-  ]);
+    http_response_code(503);
+    echo json_encode([
+        "status" => '0',
+        'message' => 'Access Denied'
+    ]);
 }

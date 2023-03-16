@@ -1,5 +1,6 @@
-<?php 
-class Lists {
+<?php
+class Lists
+{
     public $texts;
     public $status;
     public $id;
@@ -7,45 +8,51 @@ class Lists {
     private $connection;
     private $tableName;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->connection = $db;
         $this->tableName = "lists";
     }
 
-    public function create_list() {
-        $sql = "insert into ".$this->tableName."(texts) values(?)";
+    public function create_list()
+    {
+        $sql = "insert into " . $this->tableName . "(texts) values(?)";
         $res = $this->connection->prepare($sql);
         $this->texts = htmlspecialchars(strip_tags($this->texts));
-        if($res->execute([$this->texts])) {
+        if ($res->execute([$this->texts])) {
             return $this->texts;
         } else {
             return false;
         }
     }
 
-    public function get_all_lists() {
-        $sql = "select * from ".$this->tableName;
+    public function get_all_lists()
+    {
+        $sql = "select * from " . $this->tableName;
         $res =  $this->connection->prepare($sql);
         $res->execute([]);
         return $res->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function get_active_lists() {
-        $sql = "select * from ".$this->tableName." where status=0";
+    public function get_active_lists()
+    {
+        $sql = "select * from " . $this->tableName . " where status=0";
         $res =  $this->connection->prepare($sql);
         $res->execute([]);
         return $res->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function get_completed_lists() {
-        $sql = "select * from ".$this->tableName." where status=1";
+    public function get_completed_lists()
+    {
+        $sql = "select * from " . $this->tableName . " where status=1";
         $res =  $this->connection->prepare($sql);
         $res->execute([]);
         return $res->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function get_single_list() {
-        $sql = "select * from ".$this->tableName." where id=?";
+    public function get_single_list()
+    {
+        $sql = "select * from " . $this->tableName . " where id=?";
         $res = $this->connection->prepare($sql);
         $res->execute([$this->id]);
         return $res->fetch(PDO::FETCH_ASSOC);
@@ -63,25 +70,27 @@ class Lists {
         }
     }
 
-    public function delete() {
-        $sql = "delete from ".$this->tableName." where id=?";
+    public function delete()
+    {
+        $sql = "delete from " . $this->tableName . " where id=?";
         $id = $_POST['tasklistId'];
         $res = $this->connection->prepare($sql);
-        if($res->execute([$id])) {
+        if ($res->execute([$id])) {
             return true;
         } else {
             return false;
-        }       
+        }
     }
 
-    public function deleteCompleted() {
-        $sql = "delete from ".$this->tableName." where status=1";
+    public function deleteCompleted()
+    {
+        $sql = "delete from " . $this->tableName . " where status=1";
         $res = $this->connection->prepare($sql);
-        if($res->execute([])) {
+        if ($res->execute([])) {
             return true;
         } else {
             return false;
-        }       
+        }
     }
 
     public function update_status()
@@ -116,6 +125,4 @@ class Lists {
             return false;
         }
     }
-
 }
-?>

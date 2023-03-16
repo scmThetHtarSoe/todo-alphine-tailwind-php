@@ -9,47 +9,47 @@ $db = new Database();
 $connection = $db->connect();
 $lists = new Lists($connection);
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
-  $id = $_POST['tasklistId'];
-  $oldSql = "select id,texts from lists where id=?";
+    $id = $_POST['tasklistId'];
+    $oldSql = "select id,texts from lists where id=?";
     $oldres = $connection->prepare($oldSql);
     $oldres->execute([$id]);
     $oldDatas = $oldres->fetch();
     $getOldTexts = $oldDatas['texts'];
-  $data_texts = $_POST['gettexts'];
-  if(trim($data_texts) != "") {
     $data_texts = $_POST['gettexts'];
-  } else {
-    $data_texts =  $getOldTexts;
-  }
-
-  // $data = json_decode(file_get_contents("php://input"));
-  if (!empty($data_texts) && !empty($id)) {
-    $lists->texts = $data_texts;
-    $lists->id =  $id;
-    if ($lists->update_list()) {
-      http_response_code(200);
-      echo json_encode([
-        "status" => 1,
-        "message" => "List Updated"
-      ]);
+    if (trim($data_texts) != "") {
+        $data_texts = $_POST['gettexts'];
     } else {
-      http_response_code(500);
-      echo json_encode([
-        "status" => 0,
-        "message" => "Failed to update"
-      ]);
+        $data_texts =  $getOldTexts;
     }
-  } else {
-    http_response_code(404); //503 services unavailable
-    echo json_encode([
-      "status" => 0,
-      "message" => "Lists needed"
-    ]);
-  }
+
+    // $data = json_decode(file_get_contents("php://input"));
+    if (!empty($data_texts) && !empty($id)) {
+        $lists->texts = $data_texts;
+        $lists->id =  $id;
+        if ($lists->update_list()) {
+            http_response_code(200);
+            echo json_encode([
+                "status" => 1,
+                "message" => "List Updated"
+            ]);
+        } else {
+            http_response_code(500);
+            echo json_encode([
+                "status" => 0,
+                "message" => "Failed to update"
+            ]);
+        }
+    } else {
+        http_response_code(404); //503 services unavailable
+        echo json_encode([
+            "status" => 0,
+            "message" => "Lists needed"
+        ]);
+    }
 } else {
-  http_response_code(503); //503 services unavailable
-  echo json_encode([
-    "status" => 0,
-    "message" => "Access Denied"
-  ]);
+    http_response_code(503); //503 services unavailable
+    echo json_encode([
+        "status" => 0,
+        "message" => "Access Denied"
+    ]);
 }

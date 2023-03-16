@@ -10,24 +10,23 @@ $connection = $db->connect();
 $lists = new Lists($connection);
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     if ($lists->uncheckAll()) {
-      http_response_code(200);
-      echo json_encode([
-        "status" => 1,
-        "message" => "List Updated",
-        "completed"=>1,
-      ]);
-
+        http_response_code(200);
+        echo json_encode([
+            "status" => 1,
+            "message" => "List Updated",
+            "completed" => 1,
+        ]);
     } else {
-      http_response_code(500);
-      echo json_encode([
-        "status" => 0,
-        "message" => "Failed to update"
-      ]);
+        http_response_code(500);
+        echo json_encode([
+            "status" => 0,
+            "message" => "Failed to update"
+        ]);
     }
 } else {
-  http_response_code(503); //503 services unavailable
-  echo json_encode([
-    "status" => 0,
-    "message" => "Access Denied"
-  ]);
+    http_response_code(503); //503 services unavailable
+    echo json_encode([
+        "status" => 0,
+        "message" => "Access Denied"
+    ]);
 }
