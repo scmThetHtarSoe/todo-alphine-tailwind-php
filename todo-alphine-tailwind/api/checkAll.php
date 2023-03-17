@@ -29,5 +29,4 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         "status" => 0,
         "message" => "Access Denied"
     ]);
-    // echo "Access Denied";
 }

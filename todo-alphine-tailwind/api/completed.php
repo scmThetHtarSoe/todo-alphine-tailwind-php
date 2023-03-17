@@ -10,7 +10,6 @@ $connection = $db->connect();
 $lists = new Lists($connection);
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $getCompletedLists = $lists->get_completed_lists();
-    // print_r($getAllLists);
     $allLists['todo'] = [];
 
     for ($i = 0; $i < count($getCompletedLists); $i++) {

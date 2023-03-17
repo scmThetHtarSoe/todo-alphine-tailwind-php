@@ -1,5 +1,4 @@
 <?php
-// ini_set("display_errors",1);
 //include headers
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET");
@@ -10,7 +9,6 @@ $connection = $db->connect();
 $lists = new Lists($connection);
 
 if ($_SERVER['REQUEST_METHOD'] === "GET") {
-    // $data = json_decode(file_get_contents("php://input")); //post man mhr body nae param pay poh
     $data_id = isset($_GET['id']) ? intval($_GET['id']) : "";
     if (!empty($data_id)) {
         $lists->id = $data_id;

@@ -17,7 +17,6 @@ class Database extends DB
         $this->psw = $this->password;
         $this->connection = new PDO("mysql:host=$this->hostName;dbname=$this->database", $this->user, $this->psw);
         if ($this->connection) {
-            //  echo "Connected Successfully";
             return $this->connection;
         } else {
             print_r($this->connection);

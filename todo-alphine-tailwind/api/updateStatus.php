@@ -9,7 +9,7 @@ $db = new Database();
 $connection = $db->connect();
 $lists = new Lists($connection);
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
-    //   $data = json_decode(file_get_contents("php://input"));
+
     $id = $_POST['tasklistId'];
     $oldSql = "select * from lists where unquid_id=?";
     $oldres = $connection->prepare($oldSql);
@@ -49,5 +49,4 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         "status" => 0,
         "message" => "Access Denied"
     ]);
-    // echo "Access Denied";
 }

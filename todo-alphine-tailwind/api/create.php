@@ -8,7 +8,6 @@ $db = new Database();
 $connection = $db->connect();
 $lists = new Lists($connection);
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
-    // $data = json_decode(file_get_contents("php://input"));
     $data_texts = $_POST['texts'];
     $uniqid_id = $_POST['uni_id'];
     if (!empty($data_texts)) {

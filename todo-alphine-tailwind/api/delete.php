@@ -1,5 +1,4 @@
 <?php
-// ini_set("display_errors",1);
 //include headers
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST");

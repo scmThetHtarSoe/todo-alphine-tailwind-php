@@ -10,9 +10,7 @@ $connection = $db->connect();
 $lists = new Lists($connection);
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $getActiveLists = $lists->get_active_lists();
-    // print_r($getAllLists);
     $allLists['todo'] = [];
-    // while($row = $getAllLists){
     for ($i = 0; $i < count($getActiveLists); $i++) {
         array_push($allLists['todo'], [
             "id" => $getActiveLists[$i]['id'],
@@ -21,8 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         ]);
     }
 
-
-    // }
     http_response_code(200);
     echo json_encode([
         "status" => 1,

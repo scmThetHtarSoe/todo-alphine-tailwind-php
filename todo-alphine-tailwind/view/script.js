@@ -3,26 +3,10 @@ const todoApp = () => ({
   getLists: [],
   leftItem: "",
   oldText: "",
-  //   uni_id: Date.now(),
-  //   uni_id: Math.floor(Math.random() * 1000),
-  isEditing: false,
-  // isEditing: "",
-  toggleEditingState(idx) {
-    this.isEditing = !this.isEditing;
-    // this.isEditing = this.isEditing === idx ? null : idx;
-
-    if (this.isEditing) {
-      this.$nextTick(() => {
-        this.$refs.input.focus();
-      });
-    }
-  },
-  disableEditing() {
-    this.isEditing = false;
-  },
+  showDiv: [],
 
   init() {
-    $s = this.getLists;
+    $getAllLists = this.getLists;
 
     $.ajax({
       url: "/api/allLists.php",
@@ -30,7 +14,7 @@ const todoApp = () => ({
       success: function (response) {
         $allLists = response.data;
         $allLists.forEach(function (val) {
-          this.$s.push({
+          this.$getAllLists.push({
             id: val.id,
             text: val.texts,
             status: val.status,
@@ -57,7 +41,6 @@ const todoApp = () => ({
       type: "POST",
       data: list,
     });
-    this.leftItem = this.getLists.filter((data) => data.status != 1).length;
   },
   del(index, idx) {
     this.getLists.splice(index, 1);
@@ -69,7 +52,6 @@ const todoApp = () => ({
         tasklistId: tasklistId,
       },
     });
-    this.leftItem = this.getLists.filter((data) => data.status != 1).length;
   },
   check(idx) {
     $.ajax({
@@ -94,13 +76,11 @@ const todoApp = () => ({
             id: val.id,
             text: val.texts,
             status: val.status,
+            uni_id: val.unquid_id,
           });
         });
-        // this.gettext();
-        this.leftItem = this.getLists.filter((data) => data.status != 1).length;
       },
     });
-    console.log(this.getLists);
   },
   showActive() {
     this.getLists = [];
@@ -165,20 +145,6 @@ const todoApp = () => ({
         data: $(this).serialize(),
       });
     }
-    this.leftItem = this.getLists.filter((data) => data.status != 1).length;
-  },
-
-  editfun(el, idx) {
-    el.classList.add("editinputs");
-    el.nextElementSibling.classList.remove("editinputs");
-    var getVal = el.textContent;
-    $(".form-control-edit").focus();
-    this.oldText = getVal;
-  },
-
-  removeInput(index, idx) {
-    var getEditInput = document.querySelectorAll(".form-control-edit");
-    this.updatefun(getEditInput[index], idx);
   },
 
   get itemsUnCompleteCount() {
@@ -186,31 +152,38 @@ const todoApp = () => ({
     return itemLength.length;
   },
 
-  updatefun(el, idx) {
-    el.parentNode.previousElementSibling.classList.remove("editinputs");
-    el.parentNode.classList.add("editinputs");
-    var oldVal = this.oldText;
-    var tasklistId = idx;
+  forupdate() {
+    return {
+      isEditing: false,
+      oldText: "",
+      editUnedit(el, idx) {
+        this.isEditing = !this.isEditing;
+        this.oldText = el.textContent;
 
-    el.addEventListener("blur", function (event) {
-      event.preventDefault();
-      var val = el.value;
-      console.log(val);
-      if (val.trim() != "") {
-        $.ajax({
-          url: "/api/update.php",
-          type: "POST",
-          data: {
-            tasklistId: tasklistId,
-            gettexts: val,
-          },
-          success: function (response) {
-            el.parentNode.previousElementSibling.innerText = val;
-          },
-        });
-      } else {
-        el.parentNode.previousElementSibling.innerText = oldVal;
-      }
-    });
+        if (this.isEditing) {
+          this.$nextTick(() => {
+            this.$refs.input.focus();
+          });
+        }
+      },
+      editing(el, idx) {
+        var tasklistId = idx;
+        var val = el.value;
+        this.isEditing = false;
+        if (val.trim() != "") {
+          $.ajax({
+            url: "/api/update.php",
+            type: "POST",
+            data: {
+              tasklistId: tasklistId,
+              gettexts: val,
+            },
+          });
+        } else {
+          this.getLists = [];
+          this.init();
+        }
+      },
+    };
   },
 });

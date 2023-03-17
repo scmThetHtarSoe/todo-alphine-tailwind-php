@@ -22,7 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         $data_texts =  $getOldTexts;
     }
 
-    // $data = json_decode(file_get_contents("php://input"));
     if (!empty($data_texts) && !empty($id)) {
         $lists->texts = $data_texts;
         $lists->unquid_id =  $id;

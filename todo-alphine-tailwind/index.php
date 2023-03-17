@@ -42,9 +42,11 @@ include_once("api/createTable.php");
             <ul class="list-group mt-4">
                 <template x-for="(data,idx) in getLists" class="template-append">
                     <li class="list-group-item">
-                        <input type="checkbox" x-model="data.status" @click="check(data.uni_id)" :checked="data.status ? true : false" />
-                        <span :class="data.status ? 'completed text ml-4' : 'text ml-4' " x-text="data.text" @click.prevent @dblclick="toggleEditingState(idx)" x-show="!isEditing"></span>
-                        <input type="text" x-model="data.text" :id="`task_edit-${data.id}`" class="getallinputs form-control-edit" x-show="isEditing" @click.away="toggleEditingState" class="form-control-edit" x-ref="input" @keydown.enter="disableEditing" @keydown.window.escape="disable" @keyup.enter="updatefun(event.target,data.uni_id)" @keydown.window.escape="disableEditing" x-ref="input" />
+                        <input type="checkbox" class="getCheckbox" x-model="data.status" @click="check(data.uni_id)" :checked="data.status = data.status==1 ? true : false " />
+                        <div x-data="forupdate">
+                            <span :class="data.status ? 'completed text ml-4' : 'text ml-4' " x-text="data.text" @click.prevent @dblclick="editUnedit(event.target,idx)" x-show="!isEditing"></span>
+                            <input type="text" x-model="data.text" :id="data.id" class="getallinputs form-control-edit" x-show="isEditing" @click.away="editUnedit" class="form-control-edit" x-ref="input" @keydown.enter="editing(event.target,data.uni_id)" @keydown.window.escape="disable" @keydown.window.escape="editing(event.target,data.uni_id)" x-ref="input" />
+                        </div>
                         <span @click="del(idx,data.uni_id)" id="remove">&times;</span>
                     </li>
                 </template>
@@ -53,7 +55,7 @@ include_once("api/createTable.php");
                 <span x-text="itemsUnCompleteCount"></span> items left
             </p>
             <div class="flex mt-4">
-                <button type="button" id="checkAll" class="flex-1 border border-gray-200 px-8 py-2 mr-4" @click="checkAll(event.target)">
+                <button type="button" x-text="itemsUnCompleteCount == 0 ? 'Uncheck All' : 'Check All'" id="checkAll" class="flex-1 border border-gray-200 px-8 py-2 mr-4" @click="checkAll(event.target)">
                     Check All
                 </button>
                 <button type="button" id="cleardone" class="flex-1 border border-gray-200 px-8 py-2" @click="clearCompleted">
@@ -62,8 +64,6 @@ include_once("api/createTable.php");
             </div>
         </div>
     </div>
-
-    <!-- <script src="./script.js"></script> -->
     <script defer src="https://unpkg.com/alpinejs@3.4.2/dist/cdn.min.js"></script>
     <script src="./view/script.js"></script>
 </body>
