@@ -1,9 +1,7 @@
 const todoApp = () => ({
   message: "",
   getLists: [],
-  leftItem: "",
   oldText: "",
-  showDiv: [],
 
   init() {
     $getAllLists = this.getLists;
@@ -26,21 +24,23 @@ const todoApp = () => ({
   },
 
   addTodo() {
-    var list = {
-      uni_id: Date.now(),
-      texts: this.message,
-    };
-    this.getLists.push({
-      uni_id: Date.now(),
-      text: this.message,
-      status: 0,
-    });
-    this.message = "";
-    $.ajax({
-      url: "/api/create.php",
-      type: "POST",
-      data: list,
-    });
+    if (this.message.trim() != "") {
+      var list = {
+        uni_id: Date.now(),
+        texts: this.message,
+      };
+      this.getLists.push({
+        uni_id: Date.now(),
+        text: this.message,
+        status: 0,
+      });
+      this.message = "";
+      $.ajax({
+        url: "/api/create.php",
+        type: "POST",
+        data: list,
+      });
+    }
   },
   del(index, idx) {
     this.getLists.splice(index, 1);
@@ -130,7 +130,6 @@ const todoApp = () => ({
   checkAll(el) {
     if (el.innerText == "Check All") {
       this.getLists.map((data) => (data.status = 1));
-      el.innerText = "Uncheck All";
       $.ajax({
         url: "/api/checkAll.php",
         method: "POST",
@@ -138,7 +137,6 @@ const todoApp = () => ({
       });
     } else {
       this.getLists.map((data) => (data.status = 0));
-      el.innerText = "Check All";
       $.ajax({
         url: "/api/uncheckAll.php",
         method: "POST",

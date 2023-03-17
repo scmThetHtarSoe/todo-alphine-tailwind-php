@@ -27,7 +27,6 @@ include_once("api/createTable.php");
                     </button>
                 </form>
             </div>
-            <span id="errMsg" class="text-red-500"></span>
             <div class="flex mt-4">
                 <button type="button" id="all" class="flex-1 border border-gray-200 px-12 py-2" @click="showAll">
                     All
