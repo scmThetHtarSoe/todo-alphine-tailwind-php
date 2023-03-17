@@ -2,6 +2,7 @@
 class Lists
 {
     public $texts;
+    public $unquid_id;
     public $status;
     public $id;
 
@@ -16,11 +17,11 @@ class Lists
 
     public function create_list()
     {
-        $sql = "insert into " . $this->tableName . "(texts) values(?)";
+        $sql = "insert into " . $this->tableName . "(texts,unquid_id) values(?,?)";
         $res = $this->connection->prepare($sql);
         $this->texts = htmlspecialchars(strip_tags($this->texts));
-        if ($res->execute([$this->texts])) {
-            return $this->texts;
+        if ($res->execute([$this->texts, $this->unquid_id])) {
+            return true;
         } else {
             return false;
         }
@@ -60,10 +61,10 @@ class Lists
 
     public function update_list()
     {
-        $sql = "update " . $this->tableName . " set texts=? where id=?";
+        $sql = "update " . $this->tableName . " set texts=? where unquid_id=?";
         $res = $this->connection->prepare($sql);
         $this->texts = htmlspecialchars(strip_tags($this->texts));
-        if ($res->execute([$this->texts, $this->id])) {
+        if ($res->execute([$this->texts, $this->unquid_id])) {
             return true;
         } else {
             return false;
@@ -72,7 +73,7 @@ class Lists
 
     public function delete()
     {
-        $sql = "delete from " . $this->tableName . " where id=?";
+        $sql = "delete from " . $this->tableName . " where unquid_id=?";
         $id = $_POST['tasklistId'];
         $res = $this->connection->prepare($sql);
         if ($res->execute([$id])) {
@@ -95,9 +96,9 @@ class Lists
 
     public function update_status()
     {
-        $sql = "update " . $this->tableName . " set status=? where id=?";
+        $sql = "update " . $this->tableName . " set status=? where unquid_id=?";
         $res = $this->connection->prepare($sql);
-        if ($res->execute([$this->status, $this->id])) {
+        if ($res->execute([$this->status, $this->unquid_id])) {
             return true;
         } else {
             return false;

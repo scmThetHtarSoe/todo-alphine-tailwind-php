@@ -42,17 +42,15 @@ include_once("api/createTable.php");
             <ul class="list-group mt-4">
                 <template x-for="(data,idx) in getLists" class="template-append">
                     <li class="list-group-item">
-                        <input type="checkbox" class="getCheckbox" x-model="data.status" @click="check(event.target,data.id)" :checked="data.status ? true : false " />
-                        <span :class="data.status ? 'completed text ml-4' : 'text ml-4' " x-text="data.text" @dblclick="editfun(event.target,data.id)"></span>
-                        <div @click.outside="removeInput(idx,data.id)" class="editinputs getallinputs">
-                            <input type="text" :id="`task_edit-${data.id}`" class="form-control-edit" x-model="data.text" @click="updatefun(event.target,data.id)" />
-                        </div>
-                        <span @click="del(event.target,data.id)" id="remove">&times;</span>
+                        <input type="checkbox" x-model="data.status" @click="check(data.uni_id)" :checked="data.status ? true : false" />
+                        <span :class="data.status ? 'completed text ml-4' : 'text ml-4' " x-text="data.text" @click.prevent @dblclick="toggleEditingState(idx)" x-show="!isEditing"></span>
+                        <input type="text" x-model="data.text" :id="`task_edit-${data.id}`" class="getallinputs form-control-edit" x-show="isEditing" @click.away="toggleEditingState" class="form-control-edit" x-ref="input" @keydown.enter="disableEditing" @keydown.window.escape="disable" @keyup.enter="updatefun(event.target,data.uni_id)" @keydown.window.escape="disableEditing" x-ref="input" />
+                        <span @click="del(idx,data.uni_id)" id="remove">&times;</span>
                     </li>
                 </template>
             </ul>
             <p class="text-gray-500">
-                <span id="zero" x-text="leftItem"></span> items left
+                <span x-text="itemsUnCompleteCount"></span> items left
             </p>
             <div class="flex mt-4">
                 <button type="button" id="checkAll" class="flex-1 border border-gray-200 px-8 py-2 mr-4" @click="checkAll(event.target)">

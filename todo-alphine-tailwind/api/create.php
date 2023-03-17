@@ -10,14 +10,17 @@ $lists = new Lists($connection);
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     // $data = json_decode(file_get_contents("php://input"));
     $data_texts = $_POST['texts'];
+    $uniqid_id = $_POST['uni_id'];
     if (!empty($data_texts)) {
         $lists->texts = $data_texts;
+        $lists->unquid_id = $uniqid_id;
         if ($lists->create_list()) {
             http_response_code(200); //200 OK
             echo json_encode([
                 "status" => 0,
                 "message" => "List Created",
                 "texts" => $lists->texts,
+                "unquid_id" => $lists->unquid_id,
                 "id" => $connection->lastInsertId(),
                 "done" => 0
             ]);

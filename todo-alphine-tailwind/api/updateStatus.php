@@ -11,17 +11,17 @@ $lists = new Lists($connection);
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     //   $data = json_decode(file_get_contents("php://input"));
     $id = $_POST['tasklistId'];
-    $oldSql = "select id,status from lists where id=?";
+    $oldSql = "select * from lists where unquid_id=?";
     $oldres = $connection->prepare($oldSql);
     $oldres->execute([$id]);
     $oldDatas = $oldres->fetch();
     $getStatus = $oldDatas['status'];
     $status = $getStatus ? 0 : 1;
 
-    $getId = $oldDatas['id'];
+    $getId = $oldDatas['unquid_id'];
     if (isset($status) && isset($getId)) {
         $lists->status = $status;
-        $lists->id = $getId;
+        $lists->unquid_id = $getId;
         if ($lists->update_status()) {
             http_response_code(200);
             echo json_encode([

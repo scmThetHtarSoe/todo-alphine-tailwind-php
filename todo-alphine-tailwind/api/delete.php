@@ -12,7 +12,7 @@ $lists = new Lists($connection);
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $listid = isset($_POST['tasklistId']) ? $_POST['tasklistId'] : "";
     if (!empty($listid)) {
-        $lists->id = $listid;
+        $lists->unquid_id = $listid;
         if ($lists->delete()) {
             http_response_code(200);
             echo json_encode([

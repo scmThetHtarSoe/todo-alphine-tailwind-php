@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     for ($i = 0; $i < count($getAllLists); $i++) {
         array_push($allLists['todo'], [
             "id" => $getAllLists[$i]['id'],
+            "unquid_id" => $getAllLists[$i]['unquid_id'],
             "texts" => $getAllLists[$i]['texts'],
             "status" => $getAllLists[$i]['status'],
         ]);

@@ -10,7 +10,7 @@ $connection = $db->connect();
 $lists = new Lists($connection);
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $id = $_POST['tasklistId'];
-    $oldSql = "select id,texts from lists where id=?";
+    $oldSql = "select id,texts from lists where unquid_id=?";
     $oldres = $connection->prepare($oldSql);
     $oldres->execute([$id]);
     $oldDatas = $oldres->fetch();
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     // $data = json_decode(file_get_contents("php://input"));
     if (!empty($data_texts) && !empty($id)) {
         $lists->texts = $data_texts;
-        $lists->id =  $id;
+        $lists->unquid_id =  $id;
         if ($lists->update_list()) {
             http_response_code(200);
             echo json_encode([
