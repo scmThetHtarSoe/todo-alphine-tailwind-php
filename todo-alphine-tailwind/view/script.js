@@ -1,9 +1,11 @@
 const todoApp = () => ({
   message: "",
   getLists: [],
+  leftLists: [],
 
   init() {
     $getAllLists = this.getLists;
+    this.itemsUnCompleteCount;
 
     $.ajax({
       url: "/api/allLists.php",
@@ -20,6 +22,7 @@ const todoApp = () => ({
         });
       },
     });
+    this.leftLists = this.getLists;
   },
 
   addTodo() {
@@ -64,14 +67,14 @@ const todoApp = () => ({
 
   showAll() {
     this.getLists = [];
-    $s = this.getLists;
+    $getAllItems = this.getLists;
     $.ajax({
       url: "/api/allLists.php",
       type: "GET",
       success: function (response) {
         $allLists = response.data;
         $allLists.forEach(function (val) {
-          this.$s.push({
+          this.$getAllItems.push({
             id: val.id,
             text: val.texts,
             status: val.status,
@@ -80,6 +83,7 @@ const todoApp = () => ({
         });
       },
     });
+    this.leftLists = this.getLists;
   },
   showActive() {
     this.getLists = [];
@@ -98,6 +102,11 @@ const todoApp = () => ({
         });
       },
     });
+    this.leftLists = this.getLists;
+  },
+  get itemsUnCompleteCount() {
+    let itemLength = this.leftLists.filter((getList) => getList.status == 0);
+    return itemLength.length;
   },
   showCompleted() {
     this.getLists = [];
@@ -142,11 +151,6 @@ const todoApp = () => ({
         data: $(this).serialize(),
       });
     }
-  },
-
-  get itemsUnCompleteCount() {
-    let itemLength = this.getLists.filter((getList) => getList.status == 0);
-    return itemLength.length;
   },
 
   forupdate() {
