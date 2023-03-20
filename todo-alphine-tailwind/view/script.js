@@ -1,7 +1,6 @@
 const todoApp = () => ({
   message: "",
   getLists: [],
-  oldText: "",
 
   init() {
     $getAllLists = this.getLists;
@@ -129,14 +128,14 @@ const todoApp = () => ({
 
   checkAll(el) {
     if (el.innerText == "Check All") {
-      this.getLists.map((data) => (data.status = 1));
+      this.getLists.filter((data) => (data.status = 1));
       $.ajax({
         url: "/api/checkAll.php",
         method: "POST",
         data: $(this).serialize(),
       });
     } else {
-      this.getLists.map((data) => (data.status = 0));
+      this.getLists.filter((data) => (data.status = 0));
       $.ajax({
         url: "/api/uncheckAll.php",
         method: "POST",
@@ -153,10 +152,8 @@ const todoApp = () => ({
   forupdate() {
     return {
       isEditing: false,
-      oldText: "",
       editUnedit(el, idx) {
         this.isEditing = !this.isEditing;
-        this.oldText = el.textContent;
 
         if (this.isEditing) {
           this.$nextTick(() => {
