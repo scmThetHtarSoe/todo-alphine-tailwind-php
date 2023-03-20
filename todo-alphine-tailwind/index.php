@@ -16,7 +16,7 @@ include_once("api/createTable.php");
 </head>
 
 <body>
-    <div class="flex justify-center items-center h-screen">
+    <div class="flex justify-center items-center h-auto">
         <div class="container shadow w-[500px] h-auto p-8" x-data="todoApp()">
             <h2 class="title text-3xl">Todo</h2>
             <div id="form" class="flex mt-4 w-full">
